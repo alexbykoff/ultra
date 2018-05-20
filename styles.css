@@ -1,0 +1,40 @@
+body {
+    font-family: 'Raleway', sans-serif;
+}
+
+#app {
+    width: 320px;
+    margin: 0 auto;
+}
+
+.in-cart {
+    color: #999;
+    text-decoration-style: dashed;
+}
+
+ol {
+    padding-left: 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+li {
+    padding: .5rem 1rem;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    border-bottom: 1px dotted #ccc;
+}
+
+li:hover {
+    color: #fff;
+    background-color: #777;
+}
+
+input {
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    text-align: center;
+    font-size: 1.25rem;
+    width: 100%;
+}
