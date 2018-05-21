@@ -6,17 +6,19 @@ function R (htmlDOM, templateRaw) {
 }
 
 function isDocumentNode (node) {
-  return node.nodeType !== 3 && node.nodeType !== 8
+  return node.nodeType && node.nodeType !== 3 && node.nodeType !== 8
 }
 
-function compare (domNode, vNode, domParent = domNode) {
+function isEqualTags (a, b) {
+  return a.nodeName === b.nodeName
+}
+
+function compare (domNode, vNode, domNodeParent = domNode) {
   if (!(domNode || vNode)) return
   if (!vNode) return domNode.parentNode.removeChild(domNode)
-  if (!domNode) return isDocumentNode(domParent) ? domParent.appendChild(vNode.cloneNode(true)) : null
-  if (domNode.nodeName !== vNode.nodeName) domNode.parentNode.replaceChild(vNode.cloneNode(true), domNode)
-  if (domNode.nodeName === vNode.nodeName && (domNode.nodeValue !== vNode.nodeValue)) {
-    domNode.textContent = vNode.textContent
-  }
+  if (!domNode) return isDocumentNode(domNodeParent) ? domNodeParent.appendChild(vNode.cloneNode(true)) : null
+  if (!isEqualTags(domNode, vNode)) return domNode.parentNode.replaceChild(vNode.cloneNode(true), domNode)
+  if (isEqualTags(domNode, vNode) && domNode.nodeValue !== vNode.nodeValue) domNode.textContent = vNode.textContent
   if (isDocumentNode(domNode) && isDocumentNode(vNode)) compareAttributes(domNode, vNode)
   if (domNode.childNodes && vNode.childNodes) {
     let i = 0

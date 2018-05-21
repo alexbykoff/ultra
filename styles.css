@@ -3,38 +3,80 @@ body {
 }
 
 #app {
-    width: 320px;
+    width: 420px;
     margin: 0 auto;
 }
 
 .in-cart {
-    color: #999;
-    text-decoration-style: dashed;
+    color: #000;
+}
+
+.in-cart-description {
+    display: inline-block;
+    width: 70%;
 }
 
 ol {
-    padding-left: 0;
+    padding-left: 2rem;
     font-size: 1.25rem;
     color: #333;
 }
 
 li {
-    padding: .5rem 1rem;
+    padding: .5rem;
     cursor: pointer;
     transition: all .3s ease-in-out;
-    border-bottom: 1px dotted #ccc;
 }
 
 li:hover {
     color: #fff;
-    background-color: #777;
+    background-color: #0f9390;
 }
 
 input {
     outline: none;
     border: none;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 4px solid #0f9390;
     text-align: center;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     width: 100%;
+    padding: .5rem;
+    color: #555;
 }
+
+.in-cart-buttons button {
+    background-color: #888;
+    color: #fff;
+    border: none;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.in-cart-buttons button:hover {
+    background-color: #000;
+}
+
+h2 {
+    color: #0f9390;
+    font-size: 2.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    margin: 1rem 0;
+}
+
+h3 {
+    display: inline-block;
+    padding: .5rem 1rem;
+    background-color: orange;
+    color: #fff;
+    width: 5rem;
+}
+
+.in-cart-quantity {
+    display: inline-block;
+    padding: 0 .5rem;
+    color: #555;
+}
+
