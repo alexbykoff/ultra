@@ -6,7 +6,7 @@ function R (htmlDOM, templateRaw) {
 }
 
 function isDocumentNode (node) {
-  return node.nodeType && node.nodeType !== 3 && node.nodeType !== 8
+  return node instanceof Element && node.nodeType !== 3 && node.nodeType !== 8
 }
 
 function isEqualTags (a, b) {
