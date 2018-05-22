@@ -2,6 +2,7 @@ function R (htmlDOM, templateRaw) {
   const template = document.createElement('template')
   template.innerHTML = templateRaw
   const virtualDOM = template.content.firstChild.nextSibling
+  sanitizeVDOM(virtualDOM)
   return htmlDOM.childNodes.length ? compare(htmlDOM, virtualDOM) : htmlDOM.parentElement.replaceChild(virtualDOM, htmlDOM)
 }
 
@@ -14,6 +15,7 @@ function isEqualTags (a, b) {
 }
 
 function compare (domNode, vNode, domNodeParent = domNode) {
+
   if (!(domNode || vNode)) return
   if (!vNode) return domNode.parentNode.removeChild(domNode)
   if (!domNode) return isDocumentNode(domNodeParent) ? domNodeParent.appendChild(vNode.cloneNode(true)) : null
@@ -44,3 +46,13 @@ function compareAttributes (domNode, vNode) {
   })
 }
 
+function sanitizeVDOM (node) {
+  for (let n = 0; n < node.childNodes.length; n++) {
+    const child = node.childNodes[n]
+    if (child.nodeType === 3 && child.textContent.length === 1 && child.textContent.charCodeAt(0) === 10) {
+      node.removeChild(child)
+      n--
+    }
+    else if (child.nodeType === 1) sanitizeVDOM(child)
+  }
+}

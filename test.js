@@ -28,7 +28,6 @@ const state = {
     event.stopPropagation()
     const item = this.groceryList.find(e => e.index === index)
     item.quantity += inc
-    console.log(item.quantity)
     if (item.quantity === 0) {
       item.quantity = 1
       item.inCart = false
@@ -71,7 +70,6 @@ function render () {
     ${counter}
     ${checkoutPrice ? `<div class="price-tag-holder"><i class="material-icons">shopping_cart</i> <span class="price-tag">$${checkoutPrice.toFixed(2)}</span></div>` : ''}        
 </div>`
-  console.log(template)
   R(app, template)
 }
 
