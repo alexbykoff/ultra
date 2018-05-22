@@ -36,6 +36,22 @@ const state = {
   }
 }
 
+const buttons = props => `
+<span class="in-cart-buttons">
+    <button onclick="state.changeQuantity(${props.index}, -1)">-</button>
+    <button onclick="state.changeQuantity(${props.index}, 1)">+</button>
+</span>`
+
+const listItem = props =>
+  `<li onclick="state.checkItem(${props.index})">${props.item} <span>$${props.price.toFixed(2)}</span></li>`
+
+const cartItem = props => `
+<li class='in-cart'>
+    <span class="in-cart-description" onclick="state.checkItem(${props.index})">${props.item}</span>
+    ${buttons(props)}
+    <span class="in-cart-quantity">${props.quantity}</span>
+</li>`
+
 function render () {
   const itemsInCart = state.groceryList.filter(item => item.inCart).length
   const totalPrice = getTotalPrice()
@@ -54,9 +70,9 @@ function render () {
     <ol>
         ${buildListInCart()}
     </ol>
-    ${itemsInCart ? `<div>You have ${itemsInCart} positions in you cart</div>` : `<div>Your shopping cart is empty</div>`}
-    
+    ${itemsInCart ? `<div>You have ${itemsInCart} positions in you cart</div>` : `<div>Your shopping cart is empty</div>`}    
 </div>`
+
   R(app, template)
 }
 
@@ -70,38 +86,15 @@ function getTotalPrice () {
 }
 
 function buildWishList () {
-  return state.groceryList
-    .slice()
-    .filter(e => !e.inCart)
-    .sort(byItemName)
-    .map(e => `<li onclick="state.checkItem(${e.index})">${e.item} <span>$${e.price.toFixed(2)}</span></li>`)
-    .join('')
+  return state.groceryList.slice().filter(e => !e.inCart).sort(byItemName).map(listItem).join('')
 }
 
 function buildListInCart () {
-  const cartList = state.groceryList
-    .slice()
-    .filter(e => e.inCart)
-    .sort(byItemName)
-  return cartList.length
-    ? cartList.map(e => `
-<li class='in-cart'>
-    <span class="in-cart-description" onclick="state.checkItem(${e.index})">${e.item}</span>
-    ${buttons(e)}
-    <span class="in-cart-quantity">${e.quantity}</span>
-</li>`)
-      .join('')
-    : ''
+  const cartList = state.groceryList.slice().filter(e => e.inCart).sort(byItemName)
+  return cartList.length ? cartList.map(cartItem).join('') : ''
 }
 
 function byItemName (a, b) {
   return a.item.localeCompare(b.item)
 }
-
-const buttons = props => `
-<span class="in-cart-buttons">
-    <button onclick="state.changeQuantity(${props.index}, -1)">-</button>
-    <button onclick="state.changeQuantity(${props.index}, 1)">+</button>
-</span>`
-
 
