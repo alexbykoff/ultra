@@ -36,8 +36,8 @@ const state = {
   }
 }
 
-const buttons = props => `
-<span class="in-cart-buttons">
+const buttons = props =>
+`<span class="in-cart-buttons">
     <button onclick="state.changeQuantity(${props.index}, -1)">-</button>
     <button onclick="state.changeQuantity(${props.index}, 1)">+</button>
 </span>`
@@ -45,13 +45,12 @@ const buttons = props => `
 const listItem = props =>
   `<li onclick="state.checkItem(${props.index})">${props.item} <span>$${props.price.toFixed(2)}</span></li>`
 
-const cartItem = props => `
-<li class='in-cart'>
+const cartItem = props =>
+`<li class='in-cart'>
     <span class="in-cart-description">${props.item}</span>
     ${buttons(props)}    
     <span class="in-cart-quantity">${props.quantity}</span>
-    <span class="in-cart-price">per item: $${props.price.toFixed(2)}</span>
-    
+    <span class="in-cart-price">per item: $${props.price.toFixed(2)}</span>    
 </li>`
 
 function render () {
@@ -76,23 +75,19 @@ function render () {
 render()
 
 function getCheckoutPrice () {
-  return state.groceryList.reduce((total, item) => {
-    if (item.inCart) total += (item.price * item.quantity)
-    return total
-  }, 0)
+  return state.groceryList.reduce((total, item) => item.inCart ? total + (item.price * item.quantity) : total, 0)
 }
 
 function buildWishList () {
-  return state.groceryList.slice().filter(e => !e.inCart).sort(byItemName).map(listItem).join('')
+  return state.groceryList.slice().filter(e => !e.inCart).sort(abc).map(listItem).join('')
 }
 
 function buildListInCart () {
-  const cartList = state.groceryList.slice().filter(e => e.inCart).sort(byItemName)
-  console.log(cartList)
+  const cartList = state.groceryList.slice().filter(e => e.inCart).sort(abc)
   return cartList.length ? cartList.map(cartItem).join('') : ''
 }
 
-function byItemName (a, b) {
+function abc (a, b) {
   return a.item.localeCompare(b.item)
 }
 

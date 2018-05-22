@@ -3,7 +3,7 @@ function R (htmlDOM, templateRaw) {
   template.innerHTML = templateRaw
   const virtualDOM = template.content.firstChild.nextSibling
   sanitizeVDOM(virtualDOM)
-  return htmlDOM.childNodes.length ? compare(htmlDOM, virtualDOM) : htmlDOM.parentElement.replaceChild(virtualDOM, htmlDOM)
+  return htmlDOM.childNodes.length ? compareElements(htmlDOM, virtualDOM) : htmlDOM.parentElement.replaceChild(virtualDOM, htmlDOM)
 }
 
 function isDocumentNode (node) {
@@ -14,8 +14,7 @@ function isEqualTags (a, b) {
   return a.nodeName === b.nodeName
 }
 
-function compare (domNode, vNode, domNodeParent = domNode) {
-
+function compareElements (domNode, vNode, domNodeParent = domNode) {
   if (!(domNode || vNode)) return
   if (!vNode) return domNode.parentNode.removeChild(domNode)
   if (!domNode) return isDocumentNode(domNodeParent) ? domNodeParent.appendChild(vNode.cloneNode(true)) : null
@@ -25,7 +24,7 @@ function compare (domNode, vNode, domNodeParent = domNode) {
   if (domNode.childNodes && vNode.childNodes) {
     let i = 0
     while (domNode.childNodes[i] || vNode.childNodes[i]) {
-      compare(domNode.childNodes[i], vNode.childNodes[i], domNode)
+      compareElements(domNode.childNodes[i], vNode.childNodes[i], domNode)
       i++
     }
   }
@@ -34,7 +33,7 @@ function compare (domNode, vNode, domNodeParent = domNode) {
 function compareAttributes (domNode, vNode) {
   Array.from(domNode.attributes).forEach(attr => {
     const n = attr.name
-    if (vNode.getAttribute(n) === null) domNode.removeAttribute(n)
+    if (!vNode.getAttribute(n)) return domNode.removeAttribute(n)
     if (domNode.getAttribute(n) !== vNode.getAttribute(n)) {
       domNode.setAttribute(n, vNode.getAttribute(n))
       if (n === 'value') domNode.value = vNode.getAttribute(n)
