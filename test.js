@@ -13,6 +13,7 @@ const state = {
       item: this.inputValue,
       inCart: false,
       index: this.index++,
+      price: ~~(Math.random() * 12) + 1,
       quantity: 1
     })
     this.inputValue = ''
@@ -36,30 +37,44 @@ const state = {
 }
 
 function render () {
-  const app = `
+  const itemsInCart = state.groceryList.filter(item => item.inCart).length
+  const totalPrice = getTotalPrice()
+  console.log(totalPrice)
+  const app = document.querySelector('#app')
+  const template = `
 <div id="app">
     <h2>Grocery Manager</h2>
     <input autofocus value="${state.inputValue}" type="text" onkeyup="state.handleInput(this)" onchange="state.addItem(this)"/>
     <h3>Wish List</h3>
     <ol>
         ${buildWishList()}
-    </ol>    
+    </ol>
+    ${totalPrice ? `<div>Total price in wish list: ${totalPrice}</div>` : ''}    
     <h3>In Cart</h3>
     <ol>
         ${buildListInCart()}
     </ol>
+    ${itemsInCart ? `<div>You have ${itemsInCart} positions in you cart</div>` : `<div>Your shopping cart is empty</div>`}
+    
 </div>`
-  R(document.querySelector('#app'), app)
+  R(app, template)
 }
 
 render()
+
+function getTotalPrice () {
+  return state.groceryList.reduce((total, item) => {
+    if (!item.inCart) total += item.price
+    return total
+  }, 0)
+}
 
 function buildWishList () {
   return state.groceryList
     .slice()
     .filter(e => !e.inCart)
     .sort(byItemName)
-    .map(e => `<li onclick="state.checkItem(${e.index})">${e.item}</li>`)
+    .map(e => `<li onclick="state.checkItem(${e.index})">${e.item} <span>$${e.price.toFixed(2)}</span></li>`)
     .join('')
 }
 
@@ -75,8 +90,8 @@ function buildListInCart () {
     ${buttons(e)}
     <span class="in-cart-quantity">${e.quantity}</span>
 </li>`)
-    .join('') + `<div>You have ${cartList.length} positions in you cart</div>`
-    : '<h5>Your shopping cart is empty</h5>'
+      .join('')
+    : ''
 }
 
 function byItemName (a, b) {
