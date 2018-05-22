@@ -28,6 +28,7 @@ const state = {
     event.stopPropagation()
     const item = this.groceryList.find(e => e.index === index)
     item.quantity += inc
+    console.log(item.quantity)
     if (item.quantity === 0) {
       item.quantity = 1
       item.inCart = false
@@ -47,40 +48,38 @@ const listItem = props =>
 
 const cartItem = props => `
 <li class='in-cart'>
-    <span class="in-cart-description" onclick="state.checkItem(${props.index})">${props.item}</span>
-    ${buttons(props)}
+    <span class="in-cart-description">${props.item}</span>
+    ${buttons(props)}    
     <span class="in-cart-quantity">${props.quantity}</span>
+    <span class="in-cart-price">per item: $${props.price.toFixed(2)}</span>
+    
 </li>`
 
 function render () {
   const itemsInCart = state.groceryList.filter(item => item.inCart).length
-  const totalPrice = getTotalPrice()
-  console.log(totalPrice)
+  const checkoutPrice = getCheckoutPrice()
+  const counter = itemsInCart ? `<div>You have ${itemsInCart} position${itemsInCart > 1 ? 's' : ''} in your cart</div>` : `<div>Your shopping cart is empty</div>`
   const app = document.querySelector('#app')
   const template = `
 <div id="app">
     <h2>Grocery Manager</h2>
-    <input autofocus value="${state.inputValue}" type="text" onkeyup="state.handleInput(this)" onchange="state.addItem(this)"/>
+    <input placeholder="enter desired positions here" autofocus value="${state.inputValue}" type="text" onkeyup="state.handleInput(this)" onchange="state.addItem(this)"/>
     <h3>Wish List</h3>
-    <ol>
-        ${buildWishList()}
-    </ol>
-    ${totalPrice ? `<div>Total price in wish list: ${totalPrice}</div>` : ''}    
+    <ol>${buildWishList()}</ol>    
     <h3>In Cart</h3>
-    <ol>
-        ${buildListInCart()}
-    </ol>
-    ${itemsInCart ? `<div>You have ${itemsInCart} positions in you cart</div>` : `<div>Your shopping cart is empty</div>`}    
+    ${itemsInCart ? `<ol>${buildListInCart()}</ol>` : ''}
+    ${counter}
+    ${checkoutPrice ? `<div class="price-tag-holder"><i class="material-icons">shopping_cart</i> <span class="price-tag">$${checkoutPrice.toFixed(2)}</span></div>` : ''}        
 </div>`
-
+  console.log(template)
   R(app, template)
 }
 
 render()
 
-function getTotalPrice () {
+function getCheckoutPrice () {
   return state.groceryList.reduce((total, item) => {
-    if (!item.inCart) total += item.price
+    if (item.inCart) total += (item.price * item.quantity)
     return total
   }, 0)
 }
@@ -91,6 +90,7 @@ function buildWishList () {
 
 function buildListInCart () {
   const cartList = state.groceryList.slice().filter(e => e.inCart).sort(byItemName)
+  console.log(cartList)
   return cartList.length ? cartList.map(cartItem).join('') : ''
 }
 

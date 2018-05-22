@@ -1,31 +1,36 @@
 body {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Merriweather', serif;
+    box-sizing: border-box;
 }
 
 #app {
-    width: 420px;
-    margin: 0 auto;
+    max-width: 640px;
+    margin: 2rem auto;
+    background-color: #feffd9;
+    padding: 2rem;
 }
 
-.in-cart {
-    color: #000;
-}
-
-.in-cart-description {
+.in-cart span {
     display: inline-block;
-    width: 70%;
 }
 
 ol {
-    padding-left: 2rem;
     font-size: 1.25rem;
+    display: block;
     color: #333;
+    margin-top: 0;
+    padding-left: 0;
 }
 
 li {
     padding: .5rem;
     cursor: pointer;
     transition: all .3s ease-in-out;
+}
+
+.in-cart {
+    color: #000;
+    width: 100%;
 }
 
 li:hover {
@@ -41,7 +46,16 @@ input {
     font-size: 1.5rem;
     width: 100%;
     padding: .5rem;
-    color: #555;
+    color: #777;
+    background-color: transparent;
+}
+
+input::placeholder {
+    color: #ccc;
+}
+
+.in-cart-buttons {
+    float: right
 }
 
 .in-cart-buttons button {
@@ -52,10 +66,18 @@ input {
     height: 2rem;
     text-align: center;
     cursor: pointer;
+    display: inline-block;
 }
 
 .in-cart-buttons button:hover {
     background-color: #000;
+}
+
+.in-cart-price {
+    float: right;
+    text-align: right;
+    font-size: .75rem;
+    color: #777;
 }
 
 h2 {
@@ -67,16 +89,39 @@ h2 {
 }
 
 h3 {
-    display: inline-block;
-    padding: .5rem 1rem;
-    background-color: orange;
-    color: #fff;
-    width: 5rem;
+    color: #777;
 }
 
 .in-cart-quantity {
     display: inline-block;
-    padding: 0 .5rem;
+    padding-right: 1.5rem;
     color: #555;
+    float: right;
+    width: 2rem;
+    text-align: right;
+    margin: 0;
+}
+
+.price-tag-holder {
+    display: inline-block;
+    float: right;
+    padding: .75rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #eee;
+    cursor: pointer;
+    transition: all .3s linear;
+    width: 7rem;
+    text-align: right;
+}
+
+.price-tag-holder:hover {
+    background-color: #ccc;
+}
+
+.price-tag {
+    color: #5b0609;
+    font-weight: bolder;
+    font-size: 1.25rem;
 }
 
