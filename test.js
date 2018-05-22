@@ -2,13 +2,15 @@ const state = {
   groceryList: [],
   inputValue: '',
   index: 0,
+  validInput: false,
   handleInput (e) {
     if (this.inputValue === e.value) return
+    this.validInput = e.value.length > 3
     this.inputValue = e.value
     render()
   },
   addItem () {
-    if (!this.inputValue) return
+    if (!this.validInput) return
     this.groceryList.push({
       item: this.inputValue,
       inCart: false,
@@ -17,6 +19,7 @@ const state = {
       quantity: 1
     })
     this.inputValue = ''
+    this.validInput = false
     render()
   },
   checkItem (index) {
@@ -37,7 +40,7 @@ const state = {
 }
 
 const buttons = props =>
-`<span class="in-cart-buttons">
+  `<span class="in-cart-buttons">
     <button onclick="state.changeQuantity(${props.index}, -1)">-</button>
     <button onclick="state.changeQuantity(${props.index}, 1)">+</button>
 </span>`
@@ -46,7 +49,7 @@ const listItem = props =>
   `<li onclick="state.checkItem(${props.index})">${props.item} <span>$${props.price.toFixed(2)}</span></li>`
 
 const cartItem = props =>
-`<li class='in-cart'>
+  `<li class='in-cart'>
     <span class="in-cart-description">${props.item}</span>
     ${buttons(props)}    
     <span class="in-cart-quantity">${props.quantity}</span>
@@ -60,8 +63,14 @@ function render () {
   const app = document.querySelector('#app')
   const template = `
 <div id="app">
-    <h2>Grocery Manager</h2>
-    <input placeholder="enter desired positions here" autofocus value="${state.inputValue}" type="text" onkeyup="state.handleInput(this)" onchange="state.addItem(this)"/>
+    <h2>Shopping List</h2>
+    <input 
+        class="${state.validInput ? 'valid' : ''}" 
+        placeholder="enter desired positions here" 
+        autofocus value="${state.inputValue}" 
+        type="text" 
+        onkeyup="state.handleInput(this)" 
+        onchange="state.addItem(this)"/>
     <h3>Wish List</h3>
     <ol>${buildWishList()}</ol>    
     <h3>In Cart</h3>

@@ -33,7 +33,7 @@ function compareElements (domNode, vNode, domNodeParent = domNode) {
 function compareAttributes (domNode, vNode) {
   Array.from(domNode.attributes).forEach(attr => {
     const n = attr.name
-    if (!vNode.getAttribute(n)) return domNode.removeAttribute(n)
+    if (!vNode.getAttribute(n)) domNode.removeAttribute(n)
     if (domNode.getAttribute(n) !== vNode.getAttribute(n)) {
       domNode.setAttribute(n, vNode.getAttribute(n))
       if (n === 'value') domNode.value = vNode.getAttribute(n)

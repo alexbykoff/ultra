@@ -41,13 +41,17 @@ li:hover {
 input {
     outline: none;
     border: none;
-    border-bottom: 4px solid #0f9390;
+    border-bottom: 4px solid red;
     text-align: center;
     font-size: 1.5rem;
     width: 100%;
     padding: .5rem;
     color: #777;
     background-color: transparent;
+}
+
+input.valid {
+    border-color: green;
 }
 
 input::placeholder {
