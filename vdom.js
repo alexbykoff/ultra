@@ -1,3 +1,34 @@
+class Widget {
+  constructor (node, state = {}) {
+    this.mountNode = node
+    this.state = state
+    this._mount()
+  }
+
+  setState (event) {
+    this.state = {...this.state, ...event(this.state)}
+    this._mount()
+  }
+
+  render () {
+    return `<div style="text-align: center">
+<h3>This is an auto generated page.</h3>
+<h4>To get started add a render() method</h4>
+</div>`
+  }
+
+  _mount () {
+    const HTMLNode = document.getElementById(this.mountNode)
+    const template = document.createElement('template')
+    template.innerHTML = this.render()
+    const virtualDOM = template.content.firstChild.nextSibling || template.content.firstChild // TODO: check
+    virtualDOM && sanitizeVDOM(virtualDOM)
+    return HTMLNode.childNodes.length
+      ? compareElements(HTMLNode, virtualDOM)
+      : HTMLNode.parentElement.replaceChild(virtualDOM, HTMLNode)
+  }
+}
+
 function R (htmlDOM, templateRaw) {
   const template = document.createElement('template')
   template.innerHTML = templateRaw

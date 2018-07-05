@@ -67,7 +67,8 @@ function render () {
     <input 
         class="${state.validInput ? 'valid' : ''}" 
         placeholder="enter desired positions here" 
-        autofocus value="${state.inputValue}" 
+        autofocus 
+        value="${state.inputValue}" 
         type="text" 
         onkeyup="state.handleInput(this)" 
         onchange="state.addItem(this)"/>
